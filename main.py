@@ -1,15 +1,15 @@
-def shifrator(string, code, k):
-    lenstr = len(string)
+def shifrator(string_1, code, k):
+    lenstr = len(string_1)
     lencode = len(code)
     if k == 1:
-        string = string.ljust(lenstr + (lencode - lenstr % lencode) % lencode, "|")
-        lenstr = len(string)
+        string_1 = string_1.ljust(lenstr + (lencode - lenstr % lencode) % lencode, "|")
+        lenstr = len(string_1)
     count = int(lenstr / lencode)
     p1 = 0
     p2 = lencode
     string_2 = ''
     for i in range(count):
-        helpstr = string[p1:p2]
+        helpstr = string_1[p1:p2]
         for j in code:
             string_2 += str(helpstr[int(j)])
         p1 = p2
@@ -41,14 +41,8 @@ while True:
                     code = list(map(int, code))
                 except ValueError:
                     print('Некорректные данные. Шифр должен состоять из цифр.')
-                print(shifrator(string,code,k))
+                print(shifrator(string, code, k))
             else:
                 print('Некорректные данные. Начнем заново.')
         else:
             exit()
-
-
-
-# code = input().split()
-# code = list(map(int,code))
-# print(code)
