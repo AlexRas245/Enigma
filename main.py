@@ -1,6 +1,6 @@
 def shifrator(string_1, code_1, num_1):
     if num_1 == 2:
-        code_1 = code[::-1]
+        code_1 = code_1[::-1]
     code_1 = list(map(int, code_1))
     lenstr = len(string_1)
     lencode = len(code_1)
@@ -18,7 +18,7 @@ def shifrator(string_1, code_1, num_1):
         p1 = p2
         p2 = p2 + lencode
     if num_1 == 2:
-        while string_2[-1] == '\0':
+        while string_2[-1] == ' ':
             string_2 = string_2[:-1]
     return string_2
 
@@ -55,6 +55,43 @@ def shifrator_1(string_1, code_1, num_1):
             string_3 += i + ' '
         string_3 = string_3.replace(' \0', '')
         string_3 = string_3[:-1]
+    return string_3
+
+
+def shifrator_2(string_1, code_1, num_1, lenb_1):
+    if num_1 == 2:
+        code_1 = code_1[::-1]
+    code_1 = list(map(int, code_1))
+    lencode = len(code_1)
+    lenstr = len(string_1)
+    count_symbols = (lenb_1 - lenstr % lenb_1) % lenb_1
+    string_1 += '\0' * count_symbols
+    lenstr = len(string_1)
+    block = ''
+    temporary = lenb_1
+    string_2 = []
+    for i in range(lenstr):
+        if temporary == 0:
+            string_2.append(block)
+            block = ''
+            temporary = lenb_1
+        block += string_1[i]
+        temporary -= 1
+    string_2.append(block)
+    lenstr = len(string_2)
+    count = int(lenstr / lencode)
+    p1 = 0
+    p2 = lencode
+    string_3 = ''
+    for i in range(count):
+        helpstr = string_2[p1:p2]
+        for j in code_1:
+            string_3 += str(helpstr[j])
+        p1 = p2
+        p2 = p2 + lencode
+    if num_1 == 2:
+        while string_3[-1] == ' ':
+            string_3 = string_3[:-1]
     return string_3
 
 
@@ -113,7 +150,17 @@ def check_z(z_1):
 
 
 def check_lenb(lenb_1):
-    pass
+    if len(lenb_1) == 0:
+        print('Вы ничего не ввели.')
+        return False
+    else:
+        try:
+            lenb_1 = int(lenb_1)
+        except ValueError:
+            print('Некорректные данные. Начнем заново.')
+            return False
+    return True
+
 
 print('Здравствуйте, вас приветствует программа "Enigma", я помогу вам зашифровать и расшифровать сообщение.')
 while True:
@@ -140,6 +187,7 @@ while True:
                         else:
                             lenb = input('Введите длину блока\n')
                             if check_lenb(lenb):
-                                pass
+                                lenb = int(lenb)
+                                print(shifrator_2(string, code, num, lenb))
         else:
             exit()
