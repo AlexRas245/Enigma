@@ -1,8 +1,11 @@
-def shifrator(string_1, code, k):
+def shifrator(string_1, code_1, num_1):
+    if num_1 == 2:
+        code_1 = code[::-1]
+    code_1 = list(map(int,code_1))
     lenstr = len(string_1)
-    lencode = len(code)
-    if k == 1:
-        string_1 = string_1.ljust(lenstr + (lencode - lenstr % lencode) % lencode, "|")
+    lencode = len(code_1)
+    if num_1 == 1:
+        string_1 = string_1.ljust(lenstr + (lencode - lenstr % lencode) % lencode, "\0")
         lenstr = len(string_1)
     count = int(lenstr / lencode)
     p1 = 0
@@ -10,39 +13,88 @@ def shifrator(string_1, code, k):
     string_2 = ''
     for i in range(count):
         helpstr = string_1[p1:p2]
-        for j in code:
-            string_2 += str(helpstr[int(j)])
+        for j in code_1:
+            string_2 += str(helpstr[j])
         p1 = p2
         p2 = p2 + lencode
-    if k == 2:
-        while string_2[-1] == '|':
+    if num_1 == 2:
+        while string_2[-1] == '\0':
             string_2 = string_2[:-1]
-    return repr(string_2)
+    return string_2
+
+
+def check_code(code_1):
+    if len(code_1) == 0:
+        print('Вы ничего не ввели.')
+        return False
+    else:
+        try:
+            code_1 = list(map(int, code_1))
+        except ValueError:
+            print('Некорректные данные. Ключ должен состоять из чисел.')
+            return False
+        maxc = max(code_1)
+        if len(set(code_1)) != maxc+1:
+            print('Некорректные данные. В ключе пропущены числа или есть повторяющиеся.')
+            return False
+        return True
+
+
+def check_num(num_1):
+    if len(num_1) == 0:
+        print('Вы ничего не ввели.')
+        return False
+    else:
+        try:
+            num_1 = int(num_1)
+        except ValueError:
+            print('Некорректные данные. Начнем заново.')
+            return False
+    if num_1 != 0 and num_1 != 1 and num_1 != 2:
+        return False
+    return True
+
+
+def check_string(string_1):
+    if len(string_1) == 0:
+        print('Вы ничего не ввели.')
+        return False
+    return True
+
+def check_z(z_1):
+    if len(z_1) == 0:
+        print('Вы ничего не ввели.')
+        return False
+    else:
+        try:
+            z_1 = int(z_1)
+        except ValueError:
+            print('Некорректные данные. Начнем заново.')
+            return False
+    if z_1 != 1 and z_1 != 2 and z_1 != 3:
+        return False
+    return True
 
 
 print('Здравствуйте, вас приветствует программа "Enigma", я помогу вам зашифровать и расшифровать сообщение.')
 while True:
-    print('Хотите начать? \n1 - да,\n0 - выйти.')
+    print('1 - зашифровать сообщение\n2 - расшифровать сообщение\n0 - выйти')
     num = input()
-    if num != '0' and num != '1':
-        print('Некорректные данные. Начнем заново.')
-    else:
-        if num == '1':
-            print('1 - зашифровать сообщение,\n2 - расшифровать сообщение.')
-            k = input()
-            try:
-                k = int(k)
-            except ValueError:
-                print('Некорректные данные. Начнем заново.')
-            if k == 1 or k == 2:
-                string = input('Введите сообщение\n')
-                code = input('Введите шифр - каждое число через пробел\n').split()
-                try:
-                    code = list(map(int, code))
-                except ValueError:
-                    print('Некорректные данные. Шифр должен состоять из цифр.')
-                print(shifrator(string, code, k))
-            else:
-                print('Некорректные данные. Начнем заново.')
+    if check_num(num):
+        num = int(num)
+        if num == 1 or num == 2:
+            string = input('Введите сообщение\n')
+            if check_string(string):
+                if num == 1:
+                    print('Как вы хотите зашифровать сообщение?\n1 - посимвольно \n2 - по словам \n3 - по блокам')
+                else:
+                    print('Как было зашифровано сообщение?\n1 - посимвольно \n2 - по словам \n3 - по блокам')
+                z = input()
+                if check_z(z):
+                    z = int(z)
+                    code = input('Введите ключ - каждое число через пробел\n').split()
+                    if check_code(code):
+                        if z == 1:
+                            print(shifrator(string, code, num))
         else:
             exit()
