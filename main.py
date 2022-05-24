@@ -1,7 +1,7 @@
 def shifrator(string_1, code_1, num_1):
     if num_1 == 2:
         code_1 = code[::-1]
-    code_1 = list(map(int,code_1))
+    code_1 = list(map(int, code_1))
     lenstr = len(string_1)
     lencode = len(code_1)
     if num_1 == 1:
@@ -23,6 +23,41 @@ def shifrator(string_1, code_1, num_1):
     return string_2
 
 
+def shifrator_1(string_1, code_1, num_1):
+    if num_1 == 2:
+        code_1 = code_1[::-1]
+    code_1 = list(map(int, code_1))
+    lencode = len(code_1)
+    if num_1 == 1:
+        string_1 = string_1.split()
+        lenstr = len(string_1)
+        while len(string_1) != lenstr + (lencode - lenstr % lencode) % lencode:
+            string_1.append('\0')
+    elif num_1 == 2:
+        string_1 = list(string_1.replace(' ', ' \0 ').split(' '))
+    lenstr = len(string_1)
+    count = int(lenstr / lencode)
+    p1 = 0
+    p2 = lencode
+    string_2 = []
+    for i in range(count):
+        helpstr = string_1[p1:p2]
+        for j in code_1:
+            string_2.append(str(helpstr[j]))
+        p1 = p2
+        p2 = p2 + lencode
+    string_3 = ''
+    if num_1 == 1:
+        for i in string_2:
+            string_3 += i
+    elif num_1 == 2:
+        for i in string_2:
+            string_3 += i + ' '
+        string_3 = string_3.replace(' \0', '')
+        string_3 = string_3[:-1]
+    return string_3
+
+
 def check_code(code_1):
     if len(code_1) == 0:
         print('Вы ничего не ввели.')
@@ -34,7 +69,7 @@ def check_code(code_1):
             print('Некорректные данные. Ключ должен состоять из чисел.')
             return False
         maxc = max(code_1)
-        if len(set(code_1)) != maxc+1:
+        if len(set(code_1)) != maxc + 1:
             print('Некорректные данные. В ключе пропущены числа или есть повторяющиеся.')
             return False
         return True
@@ -61,6 +96,7 @@ def check_string(string_1):
         return False
     return True
 
+
 def check_z(z_1):
     if len(z_1) == 0:
         print('Вы ничего не ввели.')
@@ -75,6 +111,9 @@ def check_z(z_1):
         return False
     return True
 
+
+def check_lenb(lenb_1):
+    pass
 
 print('Здравствуйте, вас приветствует программа "Enigma", я помогу вам зашифровать и расшифровать сообщение.')
 while True:
@@ -96,5 +135,11 @@ while True:
                     if check_code(code):
                         if z == 1:
                             print(shifrator(string, code, num))
+                        elif z == 2:
+                            print(shifrator_1(string, code, num))
+                        else:
+                            lenb = input('Введите длину блока\n')
+                            if check_lenb(lenb):
+                                pass
         else:
             exit()
