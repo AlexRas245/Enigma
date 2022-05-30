@@ -1,6 +1,4 @@
 def shifrator(string_1, code_1, num_1):
-    if num_1 == 2:
-        code_1 = code_1[::-1]
     code_1 = list(map(int, code_1))
     lenstr = len(string_1)
     lencode = len(code_1)
@@ -11,21 +9,30 @@ def shifrator(string_1, code_1, num_1):
     p1 = 0
     p2 = lencode
     string_2 = ''
-    for i in range(count):
-        helpstr = string_1[p1:p2]
-        for j in code_1:
-            string_2 += str(helpstr[j])
-        p1 = p2
-        p2 = p2 + lencode
     if num_1 == 2:
+        for i in range(count):
+            c = 0
+            helpstr_1 = list(string_1[p1:p2])
+            helpstr_2 = list(string_1[p1:p2])
+            for j in code_1:
+                helpstr_1[j] = helpstr_2[c]
+                c+=1
+            p1 = p2
+            p2 = p2 + lencode
+            string_2 += ''.join(helpstr_1)
         while string_2[-1] == ' ':
             string_2 = string_2[:-1]
+    else:
+        for i in range(count):
+            helpstr = string_1[p1:p2]
+            for j in code_1:
+                string_2 += str(helpstr[j])
+            p1 = p2
+            p2 = p2 + lencode
     return string_2
 
 
 def shifrator_1(string_1, code_1, num_1):
-    if num_1 == 2:
-        code_1 = code_1[::-1]
     code_1 = list(map(int, code_1))
     lencode = len(code_1)
     if num_1 == 1:
@@ -34,37 +41,44 @@ def shifrator_1(string_1, code_1, num_1):
         while len(string_1) != lenstr + (lencode - lenstr % lencode) % lencode:
             string_1.append('\0')
     elif num_1 == 2:
-        string_1 = list(string_1.replace(' ', ' \0 ').split(' '))
+        string_1 = list(string_1.replace('  ',' ').split(' '))
     lenstr = len(string_1)
     count = int(lenstr / lencode)
     p1 = 0
     p2 = lencode
     string_2 = []
-    for i in range(count):
-        helpstr = string_1[p1:p2]
-        for j in code_1:
-            string_2.append(str(helpstr[j]))
-        p1 = p2
-        p2 = p2 + lencode
     string_3 = ''
-    if num_1 == 1:
-        for i in string_2:
-            string_3 += i
-    elif num_1 == 2:
-        for i in string_2:
-            string_3 += i + ' '
-        string_3 = string_3.replace(' \0', '')
-        string_3 = string_3[:-1]
+    print(string_1)
+    if num_1 == 2:
+        for i in range(count):
+            c = 0
+            helpstr_1 = list(string_1[p1:p2])
+            helpstr_2 = list(string_1[p1:p2])
+            for j in code_1:
+                helpstr_1[j] = helpstr_2[c]
+                c += 1
+            p1 = p2
+            p2 = p2 + lencode
+            string_2+=helpstr_1
+        string_3 += ' '.join(string_2)
+        while string_3[-1] == ' ':
+            string_3 = string_3[:-1]
+    else:
+        for i in range(count):
+            helpstr = string_1[p1:p2]
+            for j in code_1:
+                string_2.append(str(helpstr[j]))
+            p1 = p2
+            p2 = p2 + lencode
+        string_3 = ' '.join(string_2)
     return string_3
 
 
 def shifrator_2(string_1, code_1, num_1, lenb_1):
-    if num_1 == 2:
-        code_1 = code_1[::-1]
     code_1 = list(map(int, code_1))
     lencode = len(code_1)
     lenstr = len(string_1)
-    count_symbols = (lenb_1 - lenstr % lenb_1) % lenb_1
+    count_symbols = (lenb_1 - lenstr % lenb_1) % lenb_1 + ((lencode - lenstr % lencode) % lencode)
     string_1 += '\0' * count_symbols
     lenstr = len(string_1)
     block = ''
@@ -83,17 +97,29 @@ def shifrator_2(string_1, code_1, num_1, lenb_1):
     p1 = 0
     p2 = lencode
     string_3 = ''
-    for i in range(count):
-        helpstr = string_2[p1:p2]
-        for j in code_1:
-            string_3 += str(helpstr[j])
-        p1 = p2
-        p2 = p2 + lencode
+    string_4 = []
     if num_1 == 2:
+        for i in range(count):
+            c = 0
+            helpstr_1 = list(string_2[p1:p2])
+            helpstr_2 = list(string_2[p1:p2])
+            for j in code_1:
+                helpstr_1[j] = helpstr_2[c]
+                c += 1
+            p1 = p2
+            p2 = p2 + lencode
+            string_4+=helpstr_1
+        string_3 += ''.join(string_4)
         while string_3[-1] == ' ':
             string_3 = string_3[:-1]
+    else:
+        for i in range(count):
+            helpstr = string_2[p1:p2]
+            for j in code_1:
+                string_3 += str(helpstr[j])
+            p1 = p2
+            p2 = p2 + lencode
     return string_3
-
 
 def check_code(code_1):
     if len(code_1) == 0:
