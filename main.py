@@ -48,7 +48,6 @@ def shifrator_1(string_1, code_1, num_1):
     p2 = lencode
     string_2 = []
     string_3 = ''
-    print(string_1)
     if num_1 == 2:
         for i in range(count):
             c = 0
